@@ -12,6 +12,7 @@ def buscar_ciudad(ciudad):
         params={"name": ciudad, "count": 1, "language": "es"},
         timeout=10,
     )
+    respuesta.raise_for_status()
     datos = respuesta.json()
     resultados = datos.get("results")
     if not resultados:
@@ -30,6 +31,7 @@ def obtener_clima(ciudad):
         },
         timeout=10,
     )
+    respuesta.raise_for_status()
     datos = respuesta.json()
     actual = datos["current"]
     return actual["temperature_2m"], actual["relative_humidity_2m"], actual["weather_code"]
@@ -46,3 +48,5 @@ try:
     print(f"Estado: {DESCRIPCIONES.get(codigo, 'Desconocido')}")
 except ValueError as e:
     print(e)
+except requests.exceptions.RequestException:
+    print("No se pudo conectar con el servicio de clima. Intenta más tarde.")
