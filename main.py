@@ -1,5 +1,5 @@
 from datetime import date
-
+import getpass
 from infraestructura.repositorios import crear_repositorios
 from infraestructura.conexion import ErrorDeConexion
 from dominio.departamento import Departamento
@@ -10,7 +10,8 @@ from dominio.excepciones import (
 )
 from dominio.persona import Persona
 from dominio.registro_tiempo import RegistroTiempo
-
+from autenticacion import iniciar_sesion
+from infraestructura.usuario_repositorio import contar_cuentas, crear_cuenta
 
 # ---------------------------------------------------------------
 # Lectura de datos por consola (cada función repite hasta que el
@@ -203,6 +204,19 @@ def main():
     except ErrorDeConexion as e:
         print("Error de configuración:", e)
         return
+    if contar_cuentas() == 0:
+        print("No hay cuentas. Crea el administrador inicial.")
+        usuario = input("Usuario: ").strip().lower()
+        contrasena = getpass.getpass("Contraseña (mín. 8 caracteres): ")
+        if not usuario or len(contrasena) < 8:
+            print("Usuario vacío o contraseña muy corta.")
+            return
+        crear_cuenta(usuario, contrasena, "Administrador")
+
+    sesion = iniciar_sesion()
+    if sesion is None:
+        return
+    
 
     while True:
         mostrar_menu()

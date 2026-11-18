@@ -45,3 +45,10 @@ CREATE TABLE IF NOT EXISTS registro_tiempo (
     FOREIGN KEY (empleado_rut) REFERENCES empleado(rut) ON DELETE CASCADE,
     FOREIGN KEY (proyecto_id)  REFERENCES proyecto(id)
 );
+
+CREATE TABLE IF NOT EXISTS cuenta_usuario (
+    usuario          TEXT PRIMARY KEY,
+    rol              TEXT NOT NULL,
+    sal              TEXT NOT NULL,
+    hash_contrasena  TEXT NOT NULL
+);
