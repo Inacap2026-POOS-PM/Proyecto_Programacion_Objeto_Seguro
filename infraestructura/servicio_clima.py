@@ -13,7 +13,10 @@ def buscar_ciudad(ciudad):
         timeout=10,
     )
     datos = respuesta.json()
-    lugar = datos["results"][0]
+    resultados = datos.get("results")
+    if not resultados:
+        raise ValueError(f"No se encontró la ciudad '{ciudad}'")
+    lugar = resultados[0]
     return lugar["latitude"], lugar["longitude"]
 
 def obtener_clima(ciudad):
@@ -31,9 +34,15 @@ def obtener_clima(ciudad):
     actual = datos["current"]
     return actual["temperature_2m"], actual["relative_humidity_2m"], actual["weather_code"]
 
-ciudad = "Coronel"
-temperatura, humedad, codigo = obtener_clima(ciudad)
-print(f"Clima en {ciudad}")
-print(f"Temperatura: {temperatura} °C")
-print(f"Humedad: {humedad} %")
-print(f"Estado: {DESCRIPCIONES.get(codigo, 'Desconocido')}")
+ciudad = input("Ingresa la ciudad: ").strip()
+if not ciudad:
+    print("La ciudad no puede estar vacía.")
+    exit()
+try:
+    temperatura, humedad, codigo = obtener_clima(ciudad)
+    print(f"Clima en {ciudad}")
+    print(f"Temperatura: {temperatura} °C")
+    print(f"Humedad: {humedad} %")
+    print(f"Estado: {DESCRIPCIONES.get(codigo, 'Desconocido')}")
+except ValueError as e:
+    print(e)
