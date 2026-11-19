@@ -1,5 +1,8 @@
 import requests
 from infraestructura.consulta_repositorio import guardar_clima
+import re
+
+PATRON_CIUDAD = re.compile(r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' .\-]{2,60}")
 
 DESCRIPCIONES = {
     0: "Despejado", 1: "Mayormente despejado", 2: "Parcialmente nublado",
@@ -48,6 +51,9 @@ def mostrar_clima():
     ciudad = input("Ingresa la ciudad: ").strip()
     if not ciudad:
         print("La ciudad no puede estar vacía.")
+        return
+    if not PATRON_CIUDAD.fullmatch(ciudad):
+        print("Ciudad inválida: usa solo letras, espacios o guiones (2 a 60 caracteres).")
         return
     try:
         temperatura, humedad, codigo = obtener_clima(ciudad)
