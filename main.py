@@ -1,7 +1,7 @@
 from datetime import date
 import getpass
 from infraestructura.repositorios import crear_repositorios
-from infraestructura.conexion import ErrorDeConexion
+from infraestructura.conexion import ErrorDeConexion, inicializar_bd
 from dominio.departamento import Departamento
 from dominio.empleado import Empleado, Usuario
 from dominio.excepciones import (
@@ -208,14 +208,28 @@ def main():
     except ErrorDeConexion:
         print("Error de configuración: no se pudo preparar la base de datos.")
         return
-    if contar_cuentas() == 0:
-        print("No hay cuentas. Crea el administrador inicial.")
-        usuario = input("Usuario: ").strip().lower()
-        contrasena = getpass.getpass("Contraseña (mín. 8 caracteres): ")
-        if not usuario or len(contrasena) < 8:
-            print("Usuario vacío o contraseña muy corta.")
-            return
-        crear_cuenta(usuario, contrasena, "Administrador")
+    try:
+        inicializar_bd()
+        if contar_cuentas() == 0:
+            print("No hay cuentas. Crea el administrador inicial.")
+            while True:
+                usuario = pedir_texto("Usuario: ").lower()
+                contrasena = getpass.getpass("Contraseña (mín. 8, con letras y números): ")
+                if not contrasena:
+                    print("La contraseña no puede estar vacía.")
+                    continue
+                repetir = getpass.getpass("Repite la contraseña: ")
+                if contrasena != repetir:
+                    print("Las contraseñas no coinciden. Intenta de nuevo.")
+                    continue
+                if not usuario or len(contrasena) < 8 or contrasena.isalpha() or contrasena.isdigit():
+                    print("Usuario vacío o contraseña débil. Intenta de nuevo.")
+                    continue
+                crear_cuenta(usuario, contrasena, "Administrador")
+                break
+    except ErrorDeConexion:
+        print("No se pudo preparar la base de datos.")
+        return
 
     sesion = iniciar_sesion()
     if sesion is None:
