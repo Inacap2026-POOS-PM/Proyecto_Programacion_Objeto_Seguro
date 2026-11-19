@@ -1,5 +1,6 @@
 import requests
 from infraestructura.consulta_repositorio import guardar_pago
+from infraestructura.http_util import ErrorServicio, revisar_respuesta
 
 MONEDAS = {"USD": "dolar", "EUR": "euro"}
 
@@ -10,13 +11,13 @@ def obtener_tipo_cambio(moneda):
         f"https://mindicador.cl/api/{MONEDAS[moneda]}",
         timeout=10,
     )
-    respuesta.raise_for_status()
+    revisar_respuesta(respuesta, "indicadores")
     datos = respuesta.json()
     return datos["serie"][0]["valor"]
 
 def obtener_cambio_respaldo(moneda):
     respuesta = requests.get("https://open.er-api.com/v6/latest/CLP", timeout=10)
-    respuesta.raise_for_status()
+    revisar_respuesta(respuesta, "indicadores")
     datos = respuesta.json()
     unidades_por_peso = datos["rates"][moneda]
     return round(1 / unidades_por_peso, 2)
@@ -26,7 +27,7 @@ def mostrar_cambio():
     try:
         try:
             valor = obtener_tipo_cambio(moneda)
-        except requests.exceptions.RequestException:
+        except (requests.exceptions.RequestException, ErrorServicio):
             print("mindicador.cl no responde, usando fuente de respaldo...")
             valor = obtener_cambio_respaldo(moneda)
         texto = input("Sueldo en pesos chilenos: ").strip()
@@ -45,3 +46,5 @@ def mostrar_cambio():
         print("No se pudo conectar con el servicio de indicadores. Intenta más tarde.")
     except (KeyError, IndexError, TypeError):
         print("El servicio respondió con datos inesperados. Intenta más tarde.")
+    except ErrorServicio as e:
+        print(e)
