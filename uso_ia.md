@@ -23,5 +23,16 @@ Al principio la contraseña se pedía una sola vez. Como getpass no muestra lo q
 ## 7. Roles sin uso
 El login devolvía el rol del usuario, pero no se usaba para nada. Agregué una opción para que el administrador cree cuentas de empleado, y permisos para que solo el administrador pueda calcular pagos y crear cuentas.
 
+## 8. Códigos HTTP sin diferenciar
+`raise_for_status()` trataba igual un 404, un 429 o un 500. Creé `revisar_respuesta()` en `http_util.py`, que da un mensaje distinto para cada tipo de error, y el respaldo del tipo de cambio sigue funcionando cuando mindicador responde 500.
+
 ## Conclusión
 La IA me ayudó a avanzar rápido, pero varias propuestas fallaron al probarlas o tenían problemas de seguridad. Por eso probé cada cambio antes de hacer el commit y corregí lo que no funcionaba.
+
+## Prompts usados (redactados a partir de lo que pedí)
+- "¿Me ayudas con la evaluación de la Unidad 3? Es la continuación del proyecto de la Unidad 2."
+- "¿No sería mejor que también se vea el nombre de la ciudad junto al consultar el clima?"
+- "¿No debería la ciudad ingresarla el usuario, en vez de estar fija en el código?"
+- "No me gusta que si el usuario o la contraseña quedan vacíos te deje avanzar, hagamos que te devuelva de inmediato a rellenar el campo"
+- "¿No deberíamos tener una forma de crear cuentas para usuarios comunes?"
+- "¿Puedes revisar a fondo el ZIP del proyecto para ver si pasé algo por alto?"
