@@ -55,3 +55,12 @@ Como el programa solo conoce el contrato de `base.py`, cambiar de motor no oblig
 | Falla la segunda escritura al guardar un empleado | SQLite: rollback de toda la transacción. Supabase: se borra a mano la persona recién creada | ✔ |
 
 Jerarquía de errores: `EcoTechError` (negocio: `DatoInvalidoError`, `RutDuplicadoError`, `EmpleadoNoEncontradoError`) y `ErrorDeConexion` (base de datos; su subclase `ErrorDeIntegridad` indica una restricción violada). `main.py` captura ambas familias por separado y nunca usa un `except` genérico.
+
+## ES3
+
+- El programa pide iniciar sesión. Las contraseñas se guardan con hash PBKDF2 y sal, nunca en texto plano. La primera vez pide crear el administrador.
+- Opción 10: clima de una ciudad con Open-Meteo.
+- Opción 11: pago en USD o EUR con mindicador.cl, con respaldo en open.er-api.com (solo administrador).
+- Opción 12: crear cuentas de empleado (solo administrador).
+- Las consultas de clima y los pagos se guardan en SQLite.
+- El uso de IA está documentado en `uso_ia.md`.
