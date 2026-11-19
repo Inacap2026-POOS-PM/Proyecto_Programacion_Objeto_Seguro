@@ -179,6 +179,18 @@ def demostrar_polimorfismo(repo_empleados, repo_departamentos):
 # ---------------------------------------------------------------
 # Menú principal
 # ---------------------------------------------------------------
+def crear_cuenta_usuario(repo_empleados, repo_departamentos):
+    usuario = pedir_texto("Nombre del nuevo usuario: ").lower()
+    contrasena = getpass.getpass("Contraseña (mín. 8, con letras y números): ")
+    repetir = getpass.getpass("Repite la contraseña: ")
+    if contrasena != repetir:
+        print("  Las contraseñas no coinciden.")
+        return
+    if len(contrasena) < 8 or contrasena.isalpha() or contrasena.isdigit():
+        print("  Contraseña débil.")
+        return
+    crear_cuenta(usuario, contrasena, "Empleado")
+    print(f"  Cuenta creada: {usuario} (Empleado)")
 
 OPCIONES = {
     "1": ("Registrar empleado", registrar_empleado),
@@ -192,6 +204,7 @@ OPCIONES = {
     "9": ("Demostración de polimorfismo", demostrar_polimorfismo),
     "10": ("Consultar clima de un proyecto", lambda e, d: mostrar_clima()),
     "11": ("Calcular pago en moneda extranjera", lambda e, d: mostrar_cambio()),
+    "12": ("Crear cuenta de empleado", crear_cuenta_usuario),
 }
 
 
@@ -246,6 +259,9 @@ def main():
             if opcion not in OPCIONES:
                 print("  Opción no válida. Elige un número del menú.")
                 continue
+            if opcion in ("11", "12") and sesion[1] != "Administrador":
+                print("  No tienes permiso para esta opción.")
+                continue            
             OPCIONES[opcion][1](repo_empleados, repo_departamentos)
         except EcoTechError as e:
             print("  Error:", e)
