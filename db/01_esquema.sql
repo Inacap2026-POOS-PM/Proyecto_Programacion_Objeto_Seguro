@@ -61,3 +61,12 @@ CREATE TABLE IF NOT EXISTS consulta_clima (
     estado       TEXT NOT NULL,
     fecha        TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS consulta_pago (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    moneda       TEXT NOT NULL,
+    valor_clp    REAL NOT NULL,
+    sueldo_clp   INTEGER NOT NULL,
+    pago         REAL NOT NULL,
+    fecha        TEXT NOT NULL
+);
