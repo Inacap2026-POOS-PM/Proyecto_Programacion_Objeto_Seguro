@@ -43,3 +43,5 @@ def mostrar_cambio():
         print(e)
     except requests.exceptions.RequestException:
         print("No se pudo conectar con el servicio de indicadores. Intenta más tarde.")
+    except (KeyError, IndexError, TypeError):
+        print("El servicio respondió con datos inesperados. Intenta más tarde.")
