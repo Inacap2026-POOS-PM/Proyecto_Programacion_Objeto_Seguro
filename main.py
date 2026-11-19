@@ -205,8 +205,8 @@ def mostrar_menu():
 def main():
     try:
         repo_empleados, repo_departamentos = crear_repositorios()
-    except ErrorDeConexion as e:
-        print("Error de configuración:", e)
+    except ErrorDeConexion:
+        print("Error de configuración: no se pudo preparar la base de datos.")
         return
     if contar_cuentas() == 0:
         print("No hay cuentas. Crea el administrador inicial.")
@@ -233,10 +233,10 @@ def main():
                 print("  Opción no válida. Elige un número del menú.")
                 continue
             OPCIONES[opcion][1](repo_empleados, repo_departamentos)
-        except (EcoTechError, ErrorDeConexion) as e:
-            # Errores esperados: de negocio (dato inválido, RUT duplicado)
-            # o de la base de datos. Se informan y el menú continúa.
+        except EcoTechError as e:
             print("  Error:", e)
+        except ErrorDeConexion:
+            print("  Error: no se pudo acceder a la base de datos. Intenta nuevamente.")
         except (EOFError, KeyboardInterrupt):
             print("\nEntrada cancelada. Hasta luego.")
             return
