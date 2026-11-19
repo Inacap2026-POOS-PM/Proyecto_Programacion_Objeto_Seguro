@@ -1,4 +1,5 @@
 import requests
+from infraestructura.consulta_repositorio import guardar_clima
 
 DESCRIPCIONES = {
     0: "Despejado", 1: "Mayormente despejado", 2: "Parcialmente nublado",
@@ -54,6 +55,8 @@ def mostrar_clima():
         print(f"Temperatura: {temperatura} °C")
         print(f"Humedad: {humedad} %")
         print(f"Estado: {DESCRIPCIONES.get(codigo, 'Desconocido')}")
+        estado = DESCRIPCIONES.get(codigo, "Desconocido")
+        guardar_clima(ciudad, temperatura, humedad, estado)
     except ValueError as e:
         print(e)
     except requests.exceptions.RequestException:

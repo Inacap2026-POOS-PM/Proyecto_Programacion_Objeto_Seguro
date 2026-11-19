@@ -52,3 +52,12 @@ CREATE TABLE IF NOT EXISTS cuenta_usuario (
     sal              TEXT NOT NULL,
     hash_contrasena  TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS consulta_clima (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    ciudad       TEXT NOT NULL,
+    temperatura  REAL NOT NULL,
+    humedad      REAL NOT NULL,
+    estado       TEXT NOT NULL,
+    fecha        TEXT NOT NULL
+);
