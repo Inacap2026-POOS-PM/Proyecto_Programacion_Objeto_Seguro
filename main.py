@@ -1,7 +1,7 @@
 from datetime import date
 import getpass
 from infraestructura.repositorios import crear_repositorios
-from infraestructura.conexion import ErrorDeConexion, inicializar_bd
+from infraestructura.conexion import ErrorDeConexion, ErrorDeIntegridad, inicializar_bd
 from dominio.departamento import Departamento
 from dominio.empleado import Empleado, Usuario
 from dominio.excepciones import (
@@ -189,7 +189,11 @@ def crear_cuenta_usuario(repo_empleados, repo_departamentos):
     if len(contrasena) < 8 or contrasena.isalpha() or contrasena.isdigit():
         print("  Contraseña débil.")
         return
-    crear_cuenta(usuario, contrasena, "Empleado")
+    try:
+        crear_cuenta(usuario, contrasena, "Empleado")
+    except ErrorDeIntegridad:
+        print("  Ese usuario ya existe.")
+        return
     print(f"  Cuenta creada: {usuario} (Empleado)")
 
 OPCIONES = {
