@@ -12,6 +12,8 @@ from dominio.persona import Persona
 from dominio.registro_tiempo import RegistroTiempo
 from autenticacion import iniciar_sesion
 from infraestructura.usuario_repositorio import contar_cuentas, crear_cuenta
+from infraestructura.servicio_clima import mostrar_clima
+from infraestructura.servicio_cambio import mostrar_cambio
 
 # ---------------------------------------------------------------
 # Lectura de datos por consola (cada función repite hasta que el
@@ -188,6 +190,8 @@ OPCIONES = {
     "7": ("Listar departamentos", listar_departamentos),
     "8": ("Ejecutar pruebas automáticas (incluye inyección SQL)", ejecutar_pruebas),
     "9": ("Demostración de polimorfismo", demostrar_polimorfismo),
+    "10": ("Consultar clima de un proyecto", lambda e, d: mostrar_clima()),
+    "11": ("Calcular pago en moneda extranjera", lambda e, d: mostrar_cambio()),
 }
 
 

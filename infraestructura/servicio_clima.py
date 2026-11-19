@@ -36,17 +36,18 @@ def obtener_clima(ciudad):
     actual = datos["current"]
     return actual["temperature_2m"], actual["relative_humidity_2m"], actual["weather_code"]
 
-ciudad = input("Ingresa la ciudad: ").strip()
-if not ciudad:
-    print("La ciudad no puede estar vacía.")
-    exit()
-try:
-    temperatura, humedad, codigo = obtener_clima(ciudad)
-    print(f"Clima en {ciudad}")
-    print(f"Temperatura: {temperatura} °C")
-    print(f"Humedad: {humedad} %")
-    print(f"Estado: {DESCRIPCIONES.get(codigo, 'Desconocido')}")
-except ValueError as e:
-    print(e)
-except requests.exceptions.RequestException:
-    print("No se pudo conectar con el servicio de clima. Intenta más tarde.")
+def mostrar_clima():
+    ciudad = input("Ingresa la ciudad: ").strip()
+    if not ciudad:
+        print("La ciudad no puede estar vacía.")
+        return
+    try:
+        temperatura, humedad, codigo = obtener_clima(ciudad)
+        print(f"Clima en {ciudad}")
+        print(f"Temperatura: {temperatura} °C")
+        print(f"Humedad: {humedad} %")
+        print(f"Estado: {DESCRIPCIONES.get(codigo, 'Desconocido')}")
+    except ValueError as e:
+        print(e)
+    except requests.exceptions.RequestException:
+        print("No se pudo conectar con el servicio de clima. Intenta más tarde.")
