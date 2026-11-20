@@ -1,5 +1,5 @@
 import requests
-from infraestructura.consulta_repositorio import guardar_clima
+from infraestructura.consulta_repositorio import guardar_clima, ultimo_clima
 import re
 from infraestructura.http_util import ErrorServicio, revisar_respuesta
 
@@ -73,9 +73,11 @@ def mostrar_clima():
         guardar_clima(ciudad, temperatura, humedad, estado)
     except ValueError as e:
         print(e)
-    except requests.exceptions.RequestException:
-        print("No se pudo conectar con el servicio de clima. Intenta más tarde.")
+    except (requests.exceptions.RequestException, ErrorServicio) as e:
+        print(e if isinstance(e, ErrorServicio) else "No se pudo conectar con el servicio de clima.")
+        guardado = ultimo_clima(ciudad)
+        if guardado:
+            temp, hum, estado, fecha = guardado
+            print(f"Último dato guardado ({fecha}): {temp} °C, {hum} %, {estado}")
     except (KeyError, IndexError, TypeError):
         print("El servicio respondió con datos inesperados. Intenta más tarde.")
-    except ErrorServicio as e:
-        print(e)
