@@ -1,12 +1,13 @@
 import requests
 from infraestructura.consulta_repositorio import guardar_pago
 from infraestructura.http_util import ErrorServicio, revisar_respuesta
+from dominio.excepciones import DatoInvalidoError
 
 MONEDAS = {"USD": "dolar", "EUR": "euro"}
 
 def obtener_tipo_cambio(moneda):
     if moneda not in MONEDAS:
-        raise ValueError(f"Moneda no soportada: {moneda}")
+        raise DatoInvalidoError(f"Moneda no soportada: {moneda}")
     respuesta = requests.get(
         f"https://mindicador.cl/api/{MONEDAS[moneda]}",
         timeout=10,
@@ -32,10 +33,10 @@ def mostrar_cambio():
             valor = obtener_cambio_respaldo(moneda)
         texto = input("Sueldo en pesos chilenos: ").strip()
         if not texto.isdigit():
-            raise ValueError("El sueldo debe ser un número entero, sin puntos ni letras")
+            raise DatoInvalidoError("El sueldo debe ser un número entero, sin puntos ni letras")
         sueldo = int(texto)
         if sueldo <= 0:
-            raise ValueError("El sueldo debe ser mayor a 0")
+            raise DatoInvalidoError("El sueldo debe ser mayor a 0")
         pago = round(sueldo / valor, 2)
         print(f"1 {moneda} = ${valor} CLP")
         print(f"Pago: ${sueldo} CLP = {pago} {moneda}")

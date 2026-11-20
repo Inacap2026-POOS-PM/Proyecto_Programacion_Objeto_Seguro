@@ -2,6 +2,7 @@ import requests
 from infraestructura.consulta_repositorio import guardar_clima, ultimo_clima
 import re
 from infraestructura.http_util import ErrorServicio, revisar_respuesta
+from dominio.excepciones import DatoInvalidoError
 
 PATRON_CIUDAD = re.compile(r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' .\-]{2,60}")
 
@@ -28,7 +29,7 @@ def buscar_ciudad(ciudad):
     datos = respuesta.json()
     resultados = datos.get("results")
     if not resultados:
-        raise ValueError(f"No se encontró la ciudad '{ciudad}'")
+        raise DatoInvalidoError(f"No se encontró la ciudad '{ciudad}'")
     lugar = resultados[0]
     return lugar["latitude"], lugar["longitude"]
 
@@ -50,9 +51,9 @@ def obtener_clima(ciudad):
     humedad = actual["relative_humidity_2m"]
     codigo = actual["weather_code"]
     if not isinstance(temperatura, (int, float)) or not -90 <= temperatura <= 60:
-        raise ValueError("El servicio de clima entregó una temperatura inválida.")
+        raise DatoInvalidoError("El servicio de clima entregó una temperatura inválida.")
     if not isinstance(humedad, (int, float)) or not 0 <= humedad <= 100:
-        raise ValueError("El servicio de clima entregó una humedad inválida.")
+        raise DatoInvalidoError("El servicio de clima entregó una humedad inválida.")
     return temperatura, humedad, codigo
 
 def mostrar_clima():

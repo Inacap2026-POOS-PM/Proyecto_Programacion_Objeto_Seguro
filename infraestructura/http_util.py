@@ -1,4 +1,6 @@
-class ErrorServicio(Exception):
+from dominio.excepciones import EcoTechError
+
+class ErrorServicio(EcoTechError):
     """Error de una API externa, con un mensaje seguro para el usuario."""
 
 
