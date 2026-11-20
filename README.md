@@ -42,9 +42,9 @@ Como el programa solo conoce el contrato de `base.py`, cambiar de motor no oblig
 | Crear un empleado con sueldo en texto (`"mil"`) | `DatoInvalidoError: El sueldo base debe ser un número entero` | ✔ |
 | Crear un empleado con la fecha en texto (`"2024-01-01"`) | `DatoInvalidoError: La fecha de ingreso debe ser una fecha válida` | ✔ |
 | Crear un empleado con RUT o nombre vacío, o con RUT mal formado | `DatoInvalidoError` desde `Persona` | ✔ |
-| Guardar un departamento con un nombre repetido | `ErrorDeIntegridad: UNIQUE constraint failed: departamento.nombre` | ✔ |
+| Guardar un departamento con un nombre repetido | La base lo rechaza (`ErrorDeIntegridad`) y el menú muestra un mensaje genérico, sin nombres de tablas ni columnas | ✔ |
 | Guardar un departamento sin gerente | `DatoInvalidoError: El gerente no puede estar vacío` | ✔ |
-| Borrar un departamento que tiene empleados | `ErrorDeIntegridad: FOREIGN KEY constraint failed`. La llave foránea impide el borrado | ✔ |
+| Borrar un departamento que tiene empleados | La llave foránea impide el borrado (`ErrorDeIntegridad`) y el menú muestra un mensaje genérico | ✔ |
 | Buscar un empleado o departamento que no existe | `obtener` devuelve `None`. No encontrar algo no es un error | ✔ |
 | Eliminar un empleado que no existe | `eliminar` devuelve `False` | ✔ |
 | Actualizar un empleado que no existe | `actualizar` devuelve 0 filas modificadas y el menú informa `EmpleadoNoEncontradoError` | ✔ |

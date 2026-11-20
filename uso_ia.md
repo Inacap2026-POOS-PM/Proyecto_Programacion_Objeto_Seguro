@@ -42,3 +42,4 @@ La IA me ayudó a avanzar rápido, pero varias propuestas fallaron al probarlas 
 - "No me gusta que si el usuario o la contraseña quedan vacíos te deje avanzar, hagamos que te devuelva de inmediato a rellenar el campo"
 - "¿No deberíamos tener una forma de crear cuentas para usuarios comunes?"
 - "¿Puedes revisar a fondo el ZIP del proyecto para ver si pasé algo por alto?"
+- "¿Podrias contrastar el proyecto con la rúbrica? Después, ¿arreglamos lo que falte?"
