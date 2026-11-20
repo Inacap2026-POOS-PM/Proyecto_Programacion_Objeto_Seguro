@@ -26,6 +26,12 @@ El login devolvía el rol del usuario, pero no se usaba para nada. Agregué una 
 ## 8. Códigos HTTP sin diferenciar
 `raise_for_status()` trataba igual un 404, un 429 o un 500. Creé `revisar_respuesta()` en `http_util.py`, que da un mensaje distinto para cada tipo de error, y el respaldo del tipo de cambio sigue funcionando cuando mindicador responde 500.
 
+## 9. Mejoras para robustecer la solución
+Al comparar mi código con la rúbrica, hice tres mejoras:
+- **Validación de los datos de la API:** antes usaba la temperatura y la humedad sin revisarlas. Ahora compruebo que sean números y que estén en rangos posibles (temperatura entre -90 y 60 °C, humedad entre 0 y 100 %).
+- **Continuidad si la API falla:** si el servicio de clima no responde, el programa muestra el último dato guardado de esa ciudad, con su fecha.
+- **Excepciones propias:** reemplacé `ValueError` por `DatoInvalidoError`, y `ErrorServicio` ahora hereda de `EcoTechError`. Así todos los errores del sistema quedan en una misma jerarquía.
+
 ## Conclusión
 La IA me ayudó a avanzar rápido, pero varias propuestas fallaron al probarlas o tenían problemas de seguridad. Por eso probé cada cambio antes de hacer el commit y corregí lo que no funcionaba.
 
