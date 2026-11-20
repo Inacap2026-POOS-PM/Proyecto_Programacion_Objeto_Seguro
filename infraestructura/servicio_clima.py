@@ -46,7 +46,14 @@ def obtener_clima(ciudad):
     revisar_respuesta(respuesta, "clima")
     datos = respuesta.json()
     actual = datos["current"]
-    return actual["temperature_2m"], actual["relative_humidity_2m"], actual["weather_code"]
+    temperatura = actual["temperature_2m"]
+    humedad = actual["relative_humidity_2m"]
+    codigo = actual["weather_code"]
+    if not isinstance(temperatura, (int, float)) or not -90 <= temperatura <= 60:
+        raise ValueError("El servicio de clima entregó una temperatura inválida.")
+    if not isinstance(humedad, (int, float)) or not 0 <= humedad <= 100:
+        raise ValueError("El servicio de clima entregó una humedad inválida.")
+    return temperatura, humedad, codigo
 
 def mostrar_clima():
     ciudad = input("Ingresa la ciudad: ").strip()
