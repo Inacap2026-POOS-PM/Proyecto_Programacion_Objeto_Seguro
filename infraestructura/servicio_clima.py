@@ -72,13 +72,13 @@ def mostrar_clima():
         print(f"Estado: {DESCRIPCIONES.get(codigo, 'Desconocido')}")
         estado = DESCRIPCIONES.get(codigo, "Desconocido")
         guardar_clima(ciudad, temperatura, humedad, estado)
-    except ValueError as e:
-        print(e)
     except (requests.exceptions.RequestException, ErrorServicio) as e:
         print(e if isinstance(e, ErrorServicio) else "No se pudo conectar con el servicio de clima.")
         guardado = ultimo_clima(ciudad)
         if guardado:
             temp, hum, estado, fecha = guardado
             print(f"Último dato guardado ({fecha}): {temp} °C, {hum} %, {estado}")
+    except ValueError as e:
+        print(e)
     except (KeyError, IndexError, TypeError):
         print("El servicio respondió con datos inesperados. Intenta más tarde.")
